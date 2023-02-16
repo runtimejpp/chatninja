@@ -38,12 +38,19 @@ export const HelpWidget = () => {
     },
 
   ]);
+
   const handleOpenSupportWidget = () => {
     setIsChatPanelDisplayed(true);
-    createHelpRequestMutation.mutate();
+    const helpRequest = await createHelpRequestMutation.mutateAsync();
+    const channel = await client.createChannel(helpRequest.id)
+    const { default: AgoraRTM } = await import("agora-rtc-sdk");
+    const client = AgoraRTM.createInstance(process.env.NEXT_PUBLIC_AGORA_ID!);
+    await.client.login({
+      uid: user.id,
+      token: undefined,
 
-  }
-
+    });
+  };
 
   return isChatPanelDisplayed ? (
     // adding classnames to buttons "absolute .." enables easy placement of x "close button in top right corner"
